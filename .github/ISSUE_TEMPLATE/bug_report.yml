@@ -1,0 +1,58 @@
+name: Bug Report
+description: Report a crash, protocol regression, or compatibility issue in Celeris
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting an issue. Fill in the environment details below so we can reproduce it cleanly.
+        Want to fix this yourself? Comment `/claim` on this issue after triage to hold a 7-day lease.
+  - type: input
+    id: version
+    attributes:
+      label: Celeris Version
+      placeholder: "0.1.0-beta"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Paper / Purpur / Folia
+        - Velocity
+        - Fabric
+        - NeoForge
+    validations:
+      required: true
+  - type: input
+    id: mc_version
+    attributes:
+      label: Minecraft & Java Version
+      placeholder: "e.g. Paper 1.21.4 / Java 21 / Linux x86_64"
+    validations:
+      required: true
+  - type: dropdown
+    id: engine
+    attributes:
+      label: Native Engine
+      options:
+        - rust-native
+        - java-engine (fallback)
+        - unknown
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Clear description of the bug and how to reproduce it.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Stacktrace
+      render: shell
+      description: Startup banner, `/celeris status` output, or relevant stacktraces.

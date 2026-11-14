@@ -1,0 +1,92 @@
+name: Release & Publish Maven
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  rust-natives:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            platform_dir: linux-x86_64
+            artifact_file: libceleris_core.so
+            cross: false
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            platform_dir: linux-aarch64
+            artifact_file: libceleris_core.so
+            cross: true
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            platform_dir: windows-x86_64
+            artifact_file: celeris_core.dll
+            cross: false
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            platform_dir: macos-aarch64
+            artifact_file: libceleris_core.dylib
+            cross: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Install aarch64 linker
+        if: matrix.cross
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+      - name: Run Rust unit tests
+        if: "!matrix.cross"
+        run: cargo test --release --target ${{ matrix.target }}
+      - name: Build Rust cdylib
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+        run: cargo build --release --target ${{ matrix.target }}
+      - name: Stage native binary
+        shell: bash
+        run: |
+          mkdir -p staged/${{ matrix.platform_dir }}
+          cp target/${{ matrix.target }}/release/${{ matrix.artifact_file }} staged/${{ matrix.platform_dir }}/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-native-${{ matrix.platform_dir }}
+          path: staged/
+
+  publish:
+    needs: rust-natives
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: release-native-*
+          path: universal-jar/src/main/resources/natives
+          merge-multiple: true
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.9.1'
+      - name: Test, build JAR & publish to GitHub Packages Maven
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gradle :universal-jar:test :universal-jar:jar :universal-jar:publish --no-daemon
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'rc') }}
+          files: universal-jar/build/libs/Celeris-*.jar

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 380" width="840" height="380" role="img" aria-label="Express Packet P99 Delay Under Chunk Burst" style="background:transparent">
+  <style>
+    text { font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #f1edfa; }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+    .muted { fill: #9e95b8; }
+  </style>
+
+  <text x="76" y="26" font-size="15" font-weight="600">Express Packet P99 Delay Under Chunk Burst (Log Scale, us)</text>
+  <text x="76" y="44" font-size="11.5" class="muted">32 KB wire slices, 6 ms pacing, n=60 per engine per burst size, 0 decode errors</text>
+  <rect x="452" y="18" width="9" height="9" rx="2" fill="#f07a6a"/>
+  <text x="466" y="26" font-size="11" class="muted">Vanilla FIFO</text>
+  <rect x="576" y="18" width="9" height="9" rx="2" fill="#38bdf8"/>
+  <text x="590" y="26" font-size="11" class="muted">Celeris java-engine</text>
+  <rect x="700" y="18" width="9" height="9" rx="2" fill="#a98fff"/>
+  <text x="714" y="26" font-size="11" class="muted">Celeris rust-native</text>
+  <line x1="76" y1="307.6" x2="812" y2="307.6" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="66" y="311.6" text-anchor="end" font-size="11" class="mono muted">10</text>
+  <line x1="76" y1="246.2" x2="812" y2="246.2" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="66" y="250.2" text-anchor="end" font-size="11" class="mono muted">100</text>
+  <line x1="76" y1="184.8" x2="812" y2="184.8" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="66" y="188.8" text-anchor="end" font-size="11" class="mono muted">1k</text>
+  <line x1="76" y1="123.4" x2="812" y2="123.4" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="66" y="127.4" text-anchor="end" font-size="11" class="mono muted">10k</text>
+  <line x1="76" y1="80.5" x2="812" y2="80.5" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="66" y="84.5" text-anchor="end" font-size="11" class="mono muted">50k</text>
+  <line x1="76" y1="326" x2="812" y2="326" stroke="rgba(255,255,255,0.16)" stroke-width="1"/>
+  <text x="198.7" y="360" text-anchor="middle" font-size="12" font-weight="500">256 KB Burst</text>
+  <rect x="123.7" y="120.9" width="42" height="205.1" rx="4" fill="#f07a6a" fill-opacity="0.88"/>
+  <text x="144.7" y="114.9" text-anchor="middle" font-size="10.5" class="mono">10,964</text>
+  <rect x="177.7" y="234.8" width="42" height="91.2" rx="4" fill="#38bdf8" fill-opacity="0.88"/>
+  <text x="198.7" y="228.8" text-anchor="middle" font-size="10.5" class="mono">153</text>
+  <rect x="231.7" y="278.8" width="42" height="47.2" rx="4" fill="#a98fff" fill-opacity="0.88"/>
+  <text x="252.7" y="272.8" text-anchor="middle" font-size="10.5" class="mono">29</text>
+  <text x="444.0" y="360" text-anchor="middle" font-size="12" font-weight="500">512 KB Burst</text>
+  <rect x="369.0" y="105.4" width="42" height="220.6" rx="4" fill="#f07a6a" fill-opacity="0.88"/>
+  <text x="390.0" y="99.4" text-anchor="middle" font-size="10.5" class="mono">19,641</text>
+  <rect x="423.0" y="213.0" width="42" height="113.0" rx="4" fill="#38bdf8" fill-opacity="0.88"/>
+  <text x="444.0" y="207.0" text-anchor="middle" font-size="10.5" class="mono">348</text>
+  <rect x="477.0" y="281.9" width="42" height="44.1" rx="4" fill="#a98fff" fill-opacity="0.88"/>
+  <text x="498.0" y="275.9" text-anchor="middle" font-size="10.5" class="mono">26</text>
+  <text x="689.3" y="360" text-anchor="middle" font-size="12" font-weight="500">1024 KB Burst</text>
+  <rect x="614.3" y="83.8" width="42" height="242.2" rx="4" fill="#f07a6a" fill-opacity="0.88"/>
+  <text x="635.3" y="77.8" text-anchor="middle" font-size="10.5" class="mono">44,068</text>
+  <rect x="668.3" y="241.1" width="42" height="84.9" rx="4" fill="#38bdf8" fill-opacity="0.88"/>
+  <text x="689.3" y="235.1" text-anchor="middle" font-size="10.5" class="mono">121</text>
+  <rect x="722.3" y="255.7" width="42" height="70.3" rx="4" fill="#a98fff" fill-opacity="0.88"/>
+  <text x="743.3" y="249.7" text-anchor="middle" font-size="10.5" class="mono">70</text>
+</svg>

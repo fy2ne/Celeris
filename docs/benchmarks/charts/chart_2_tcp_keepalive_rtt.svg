@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 380" width="840" height="380" role="img" aria-label="TCP Loopback KeepAlive RTT P95" style="background:transparent">
+  <style>
+    text { font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #f1edfa; }
+    .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+    .muted { fill: #9e95b8; }
+  </style>
+
+  <text x="64" y="26" font-size="15" font-weight="600">Real TCP Socket KeepAlive P95 RTT (SO_RCVBUF=8 KB, ms)</text>
+  <text x="64" y="44" font-size="11.5" class="muted">Lower is better. Idle parity holds (~0.8–1.7 ms); under 1 MB burst, FIFO spikes to 15.25 ms</text>
+  <rect x="452" y="18" width="9" height="9" rx="2" fill="#f07a6a"/>
+  <text x="466" y="26" font-size="11" class="muted">Vanilla FIFO</text>
+  <rect x="576" y="18" width="9" height="9" rx="2" fill="#38bdf8"/>
+  <text x="590" y="26" font-size="11" class="muted">Celeris java-engine</text>
+  <rect x="700" y="18" width="9" height="9" rx="2" fill="#a98fff"/>
+  <text x="714" y="26" font-size="11" class="muted">Celeris rust-native</text>
+  <line x1="64" y1="326.0" x2="812" y2="326.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="54" y="330.0" text-anchor="end" font-size="11" class="mono muted">0 ms</text>
+  <line x1="64" y1="260.0" x2="812" y2="260.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="54" y="264.0" text-anchor="end" font-size="11" class="mono muted">4 ms</text>
+  <line x1="64" y1="194.0" x2="812" y2="194.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="54" y="198.0" text-anchor="end" font-size="11" class="mono muted">8 ms</text>
+  <line x1="64" y1="128.0" x2="812" y2="128.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="54" y="132.0" text-anchor="end" font-size="11" class="mono muted">12 ms</text>
+  <line x1="64" y1="62.0" x2="812" y2="62.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="54" y="66.0" text-anchor="end" font-size="11" class="mono muted">16 ms</text>
+  <line x1="64" y1="326" x2="812" y2="326" stroke="rgba(255,255,255,0.16)" stroke-width="1"/>
+  <text x="188.7" y="360" text-anchor="middle" font-size="12" font-weight="500">Idle (Baseline)</text>
+  <rect x="113.7" y="312.8" width="42" height="13.2" rx="4" fill="#f07a6a" fill-opacity="0.88"/>
+  <text x="134.7" y="306.8" text-anchor="middle" font-size="10.5" class="mono">0.80</text>
+  <rect x="167.7" y="300.1" width="42" height="25.9" rx="4" fill="#38bdf8" fill-opacity="0.88"/>
+  <text x="188.7" y="294.1" text-anchor="middle" font-size="10.5" class="mono">1.57</text>
+  <rect x="221.7" y="308.3" width="42" height="17.7" rx="4" fill="#a98fff" fill-opacity="0.88"/>
+  <text x="242.7" y="302.3" text-anchor="middle" font-size="10.5" class="mono">1.07</text>
+  <text x="438.0" y="360" text-anchor="middle" font-size="12" font-weight="500">512 KB Burst</text>
+  <rect x="363.0" y="124.4" width="42" height="201.6" rx="4" fill="#f07a6a" fill-opacity="0.88"/>
+  <text x="384.0" y="118.4" text-anchor="middle" font-size="10.5" class="mono">12.22</text>
+  <rect x="417.0" y="222.4" width="42" height="103.6" rx="4" fill="#38bdf8" fill-opacity="0.88"/>
+  <text x="438.0" y="216.4" text-anchor="middle" font-size="10.5" class="mono">6.28</text>
+  <rect x="471.0" y="222.9" width="42" height="103.1" rx="4" fill="#a98fff" fill-opacity="0.88"/>
+  <text x="492.0" y="216.9" text-anchor="middle" font-size="10.5" class="mono">6.25</text>
+  <text x="687.3" y="360" text-anchor="middle" font-size="12" font-weight="500">1024 KB Burst</text>
+  <rect x="612.3" y="74.7" width="42" height="251.3" rx="4" fill="#f07a6a" fill-opacity="0.88"/>
+  <text x="633.3" y="68.7" text-anchor="middle" font-size="10.5" class="mono">15.23</text>
+  <rect x="666.3" y="274.9" width="42" height="51.1" rx="4" fill="#38bdf8" fill-opacity="0.88"/>
+  <text x="687.3" y="268.9" text-anchor="middle" font-size="10.5" class="mono">3.10</text>
+  <rect x="720.3" y="299.6" width="42" height="26.4" rx="4" fill="#a98fff" fill-opacity="0.88"/>
+  <text x="741.3" y="293.6" text-anchor="middle" font-size="10.5" class="mono">1.60</text>
+</svg>

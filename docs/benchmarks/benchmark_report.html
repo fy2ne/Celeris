@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Celeris v0.2.0 Verification &amp; A/B Benchmark Report</title>
+<style>
+  body { background:#020617; color:#e2e8f0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; margin:0; padding:32px; line-height:1.5; }
+  .wrap { max-width:1040px; margin:0 auto; }
+  h1 { color:#f8fafc; margin-bottom:4px; }
+  .sub { color:#94a3b8; margin-bottom:28px; font-size:14px; }
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+  .card { background:#0f172a; border:1px solid #1e293b; border-radius:10px; padding:16px; }
+  .card .k { color:#94a3b8; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  .card .v { color:#38bdf8; font-size:24px; font-weight:700; margin-top:4px; }
+  .card .d { color:#cbd5e1; font-size:12px; margin-top:4px; }
+  .chart { margin:24px 0; background:#0f172a; border:1px solid #1e293b; border-radius:12px; padding:12px; }
+  .chart img { width:100%; height:auto; display:block; }
+  table { width:100%; border-collapse:collapse; margin:16px 0 28px; background:#0f172a; border-radius:10px; overflow:hidden; font-size:13px; }
+  th, td { padding:10px 12px; text-align:right; border-bottom:1px solid #1e293b; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align:left; }
+  th { background:#1e293b; color:#f1f5f9; font-weight:600; }
+  .pass { color:#10b981; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Celeris v0.2.0 — Verification &amp; Scientific A/B Benchmark Report</h1>
+  <div class="sub">Baseline FIFO vs Celeris java-engine &amp; rust-native | cargo test --release: 11/11 PASS | Gradle :universal-jar:test: 9/9 PASS | Vanilla Wire Compatibility: 0 Decode Errors</div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="k">1 MB Burst P99 (Paced)</div>
+      <div class="v">100 us</div>
+      <div class="d">vs 44.4 ms Baseline FIFO</div>
+    </div>
+    <div class="card">
+      <div class="k">TCP 1 MB Burst KA P95</div>
+      <div class="v">2.70 ms</div>
+      <div class="d">FIFO: 15.25 ms | Java: 3.17 ms</div>
+    </div>
+    <div class="card">
+      <div class="k">Compression @ 256B L6</div>
+      <div class="v">74.7%</div>
+      <div class="d">Live roxaura.mcsh.gg: 78.7% saved</div>
+    </div>
+    <div class="card">
+      <div class="k">Vanilla Protocol Parity</div>
+      <div class="v" style="color:#10b981">100%</div>
+      <div class="d">0 decode errors, AES-128-CFB8 verified</div>
+    </div>
+  </div>
+
+  <div class="chart"><img src="charts/chart_1_express_burst_latency.svg" alt="Express Burst Latency"/></div>
+  <table>
+    <thead><tr><th>Burst</th><th>Engine</th><th>CPU P50 (us)</th><th>Paced Wire P50 (us)</th><th>Paced Wire P95 (us)</th><th>Paced Wire P99 (us)</th><th>Paced Wire Max (us)</th><th>Preempted</th><th>Saved %</th><th>Decode Err</th></tr></thead>
+    <tbody>
+      <tr><td>256 KB</td><td>Baseline FIFO</td><td>188</td><td>6188</td><td>7763</td><td>12807</td><td>12807</td><td>0</td><td>76.19%</td><td class="pass">0</td></tr>
+<tr><td>256 KB</td><td>Celeris java-engine</td><td>38</td><td>38</td><td>88</td><td>233</td><td>233</td><td>60</td><td>76.19%</td><td class="pass">0</td></tr>
+<tr><td>256 KB</td><td>Celeris rust-native</td><td>19</td><td>19</td><td>26</td><td>30</td><td>30</td><td>60</td><td>76.83%</td><td class="pass">0</td></tr>
+<tr><td>512 KB</td><td>Baseline FIFO</td><td>141</td><td>18141</td><td>18388</td><td>19816</td><td>19816</td><td>0</td><td>76.20%</td><td class="pass">0</td></tr>
+<tr><td>512 KB</td><td>Celeris java-engine</td><td>38</td><td>38</td><td>89</td><td>690</td><td>690</td><td>60</td><td>76.20%</td><td class="pass">0</td></tr>
+<tr><td>512 KB</td><td>Celeris rust-native</td><td>12</td><td>12</td><td>22</td><td>28</td><td>28</td><td>60</td><td>76.83%</td><td class="pass">0</td></tr>
+<tr><td>1024 KB</td><td>Baseline FIFO</td><td>191</td><td>42191</td><td>42977</td><td>44390</td><td>44390</td><td>0</td><td>76.20%</td><td class="pass">0</td></tr>
+<tr><td>1024 KB</td><td>Celeris java-engine</td><td>21</td><td>21</td><td>51</td><td>130</td><td>130</td><td>60</td><td>76.20%</td><td class="pass">0</td></tr>
+<tr><td>1024 KB</td><td>Celeris rust-native</td><td>15</td><td>15</td><td>38</td><td>100</td><td>100</td><td>60</td><td>76.83%</td><td class="pass">0</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart"><img src="charts/chart_2_tcp_keepalive_rtt.svg" alt="TCP KeepAlive RTT"/></div>
+  <table>
+    <thead><tr><th>Phase</th><th>Engine</th><th>Samples</th><th>P50 (ms)</th><th>P95 (ms)</th><th>P99 (ms)</th><th>Max (ms)</th><th>Mean (ms)</th></tr></thead>
+    <tbody>
+      <tr><td>idle</td><td>Baseline FIFO</td><td>25</td><td>0.59</td><td>0.81</td><td>0.85</td><td>0.85</td><td>0.63</td></tr>
+<tr><td>idle</td><td>Celeris java-engine</td><td>25</td><td>0.83</td><td>1.66</td><td>1.73</td><td>1.73</td><td>0.92</td></tr>
+<tr><td>idle</td><td>Celeris rust-native</td><td>25</td><td>0.72</td><td>1.10</td><td>1.17</td><td>1.17</td><td>0.76</td></tr>
+<tr><td>burst_512kb</td><td>Baseline FIFO</td><td>30</td><td>5.47</td><td>12.25</td><td>12.36</td><td>12.36</td><td>4.86</td></tr>
+<tr><td>burst_512kb</td><td>Celeris java-engine</td><td>30</td><td>0.91</td><td>6.86</td><td>8.27</td><td>8.27</td><td>1.77</td></tr>
+<tr><td>burst_512kb</td><td>Celeris rust-native</td><td>30</td><td>0.97</td><td>7.56</td><td>7.65</td><td>7.65</td><td>1.65</td></tr>
+<tr><td>burst_1024kb</td><td>Baseline FIFO</td><td>36</td><td>13.07</td><td>15.25</td><td>15.29</td><td>15.29</td><td>12.13</td></tr>
+<tr><td>burst_1024kb</td><td>Celeris java-engine</td><td>36</td><td>0.81</td><td>3.17</td><td>4.16</td><td>4.16</td><td>1.10</td></tr>
+<tr><td>burst_1024kb</td><td>Celeris rust-native</td><td>36</td><td>0.82</td><td>2.70</td><td>3.33</td><td>3.33</td><td>0.98</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart"><img src="charts/chart_3_compression_thresholds.svg" alt="Compression Threshold Sweep"/></div>
+  <div class="chart"><img src="charts/chart_4_live_roxaura_telemetry.svg" alt="Live Roxaura Telemetry"/></div>
+</div>
+</body>
+</html>

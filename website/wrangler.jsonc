@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "celeris-web",
+  "compatibility_date": "2026-11-14",
+  "assets": {
+    "directory": "."
+  },
+  "routes": [
+    {
+      "pattern": "celeris.fy2ne.me",
+      "custom_domain": true
+    }
+  ]
+}

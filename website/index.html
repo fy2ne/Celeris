@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Celeris — Server-Side Netty &amp; Rust JNI Transport for Minecraft</title>
+  <meta name="description" content="Single-jar, zero-client-mod server networking engine for Paper, Velocity, Fabric, and NeoForge. Keeps KeepAlive and PvP hits ahead of chunk bursts.">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top">
+        <span>Celeris</span>
+        <span class="ver-pill">0.1.0-beta</span>
+      </a>
+      <nav class="nav">
+        <a href="#pipeline">Pipeline</a>
+        <a href="#benchmarks">Benchmarks</a>
+        <a href="#limits">Real Limits</a>
+        <a href="#install">Install</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn" href="https://modrinth.com/project/celeris" target="_blank" rel="noopener">Modrinth</a>
+        <a class="btn btn-primary" href="https://github.com/fy2ne/Celeris" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>Keep combat &amp; pings ahead of chunk bursts.</h1>
+          <p class="hero-lead">
+            A single universal <code class="mono">.jar</code> for Paper, Purpur, Folia, Velocity, Fabric, and NeoForge.
+            Vanilla clients connect on port <code class="mono">25565</code> with nothing installed.
+          </p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#install">Install 0.1.0-beta</a>
+            <a class="btn" href="#benchmarks">Inspect Raw Benchmarks</a>
+          </div>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric-row">
+            <span class="metric-label">1 MB Burst Express P99 (rust-native vs FIFO)</span>
+            <span class="metric-val">100 us <small style="color:var(--muted);font-size:13px;">vs 44,390 us</small></span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">TCP Loopback 1 MB Burst KeepAlive P50</span>
+            <span class="metric-val">0.82 ms <small style="color:var(--muted);font-size:13px;">vs 13.07 ms</small></span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Paper 26.3 Live Wire Savings (8,447 rows)</span>
+            <span class="metric-val">78.7% <small style="color:var(--muted);font-size:13px;">0 disconnects</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pipeline" class="section section-alt">
+      <div class="wrap">
+        <h2>Why chunk bursts spike ping on TCP</h2>
+        <p class="section-sub">
+          Standard Minecraft servers push chunks, light updates, combat hits, and KeepAlive pings into a single FIFO Netty queue and an uncapped OS socket send buffer.
+        </p>
+        <div class="pipe-grid">
+          <div class="pipe-panel">
+            <div class="pipe-head">
+              <span class="pipe-title">Vanilla Netty FIFO</span>
+              <span class="tag-bad">Head-of-line blocked</span>
+            </div>
+            <div class="lane">
+              <span class="pkt pkt-bulk">Chunk 0..15 (512 KB)</span>
+              <span class="pkt pkt-bulk">LightUpdate</span>
+              <span class="pkt pkt-exp">KeepAlive</span>
+              <span class="pkt pkt-exp">DamageEvent</span>
+            </div>
+            <p style="margin:0;color:var(--muted);font-size:14.5px;">
+              KeepAlive and PvP packets sit behind hundreds of kilobytes of queued chunk bytes in user space and the kernel socket buffer.
+            </p>
+          </div>
+          <div class="pipe-panel">
+            <div class="pipe-head">
+              <span class="pipe-title">Celeris Express + Kernel Clamp</span>
+              <span class="tag-good">Bundle-safe preemption</span>
+            </div>
+            <div class="lane">
+              <span class="pkt pkt-exp">KeepAlive</span>
+              <span class="pkt pkt-exp">DamageEvent</span>
+              <span class="pkt pkt-bar">ChunkBatchStart</span>
+              <span class="pkt pkt-bulk">Chunk 0..N (32 KB slices)</span>
+            </div>
+            <p style="margin:0;color:var(--muted);font-size:14.5px;">
+              Express traffic cuts ahead between chunk slices without splitting <code class="mono">BundleDelimiter</code> trains. Linux <code class="mono">TCP_NOTSENT_LOWAT=16KB</code> prevents kernel buffer bloat.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="benchmarks" class="section">
+      <div class="wrap">
+        <h2>Measured Benchmarks</h2>
+        <p class="section-sub">
+          All figures below are parsed directly from <code class="mono">docs/benchmarks/data/*.csv</code>. Local burst and TCP loopback sweeps ran on <code class="mono">0.2.0</code>/<code class="mono">0.1.0-beta</code> code; live server telemetry ran on Paper <code class="mono">26.3</code> (<code class="mono">roxaura.mcsh.gg</code>, <code class="mono">v0.1.0 java-engine</code>).
+        </p>
+
+        <div class="tabs" role="tablist">
+          <button class="tab-btn active" data-tab="burst" role="tab">Express Burst Scheduler</button>
+          <button class="tab-btn" data-tab="tcp" role="tab">Real TCP Loopback RTT</button>
+          <button class="tab-btn" data-tab="compression" role="tab">Compression &amp; CFB8 Parity</button>
+          <button class="tab-btn" data-tab="live" role="tab">Live Paper 26.3 (roxaura)</button>
+        </div>
+
+        <div id="bench-controls" class="bench-controls"></div>
+        <div id="chart-stage" class="chart-stage"></div>
+        <div id="bench-table" class="table-wrap"></div>
+      </div>
+    </section>
+
+    <section id="limits" class="section section-alt">
+      <div class="wrap">
+        <h2>Where Vanilla TCP Matches Celeris</h2>
+        <p class="section-sub">
+          Packet scheduling cannot bend physics or fix an overloaded main thread. Here is what Celeris does not change.
+        </p>
+        <div class="limits-grid">
+          <div class="limit-item">
+            <h3>Idle Connections</h3>
+            <p>When no chunk burst is queued, TCP loopback KeepAlive P50 is <code class="mono">0.59 ms</code> on Vanilla FIFO vs <code class="mono">0.72 ms</code> on Celeris Rust. Empty pipes are already fast.</p>
+          </div>
+          <div class="limit-item">
+            <h3>Geographic Fiber Distance</h3>
+            <p>On <code class="mono">roxaura.mcsh.gg</code> (EU) from Morocco, base <code class="mono">mcPing</code> stays <code class="mono">136 ms</code>. Celeris stops <code class="mono">/tp</code> chunk floods from inflating that to 400+ ms spikes.</p>
+          </div>
+          <div class="limit-item">
+            <h3>Main-Thread TPS Lag</h3>
+            <p>If entity AI or worldgen drops server TPS below 20, Netty transport tuning will not speed up tick computation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="section">
+      <div class="wrap">
+        <h2>Deploy &amp; Developer Coordinates</h2>
+        <p class="section-sub">
+          Drop <code class="mono">Celeris-0.1.0-beta.jar</code> into <code class="mono">plugins/</code> (Paper/Velocity) or <code class="mono">mods/</code> (Fabric/NeoForge), or depend on it via GitHub Packages.
+        </p>
+        <div class="install-grid">
+          <div>
+            <h3 style="margin:0 0 10px;font-size:15px;">Gradle (GitHub Packages)</h3>
+            <pre class="code-block">repositories {
+    maven("https://maven.pkg.github.com/fy2ne/Celeris")
+}
+
+dependencies {
+    compileOnly("dev.fy2ne:celeris:0.1.0-beta")
+}</pre>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px;font-size:15px;">Runtime Inspection</h3>
+            <pre class="code-block">/celeris stats       # P50/P95/P99 express delay + saved %
+/celeris bench 512 30
+/celeris ping        # mcPing vs kernel TCP_INFO RTT
+/celeris debug       # pipeline + ViaVersion order check</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>Celeris 0.1.0-beta — AGPL-3.0-or-later</span>
+      <span>
+        <a href="https://github.com/fy2ne/Celeris" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://modrinth.com/project/celeris" target="_blank" rel="noopener">Modrinth (upcoming)</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>

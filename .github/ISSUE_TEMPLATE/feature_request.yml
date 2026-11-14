@@ -1,0 +1,26 @@
+name: Feature Request
+description: Propose a transport optimization, platform target, or telemetry metric
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Bottleneck
+      description: What packet-scheduling, compression, or platform problem does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: Describe the behavior, wire impact, or API surface.
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Scope Check
+      options:
+        - label: Compatible with vanilla Minecraft clients (no client mod required)
+        - label: Preserves strict TCP stream ordering / ViaVersion compatibility

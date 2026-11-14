@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "celeris",
+  "version": "0.1.0-beta",
+  "name": "Celeris",
+  "description": "Rust native TCP pacer and priority packet engine",
+  "authors": ["fy2ne"],
+  "license": "AGPL-3.0-or-later",
+  "environment": "server",
+  "entrypoints": {
+    "server": ["dev.fy2ne.celeris.bootstrap.FabricBootstrap"]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "java": ">=17"
+  }
+}

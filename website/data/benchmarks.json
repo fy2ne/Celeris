@@ -1,0 +1,1397 @@
+{
+  "version": "0.1.0-beta",
+  "burst": {
+    "sizes": {
+      "256": {
+        "baseline_fifo": {
+          "n": 60,
+          "p50": 6189.5,
+          "p95": 7783.7,
+          "p99": 10963.8,
+          "max": 12807
+        },
+        "celeris_java": {
+          "n": 60,
+          "p50": 39,
+          "p95": 88,
+          "p99": 153.3,
+          "max": 233
+        },
+        "celeris_rust": {
+          "n": 60,
+          "p50": 19,
+          "p95": 26,
+          "p99": 29.4,
+          "max": 30
+        }
+      },
+      "512": {
+        "baseline_fifo": {
+          "n": 60,
+          "p50": 18141.5,
+          "p95": 18401.5,
+          "p99": 19641.4,
+          "max": 19816
+        },
+        "celeris_java": {
+          "n": 60,
+          "p50": 38.5,
+          "p95": 89.1,
+          "p99": 347.8,
+          "max": 690
+        },
+        "celeris_rust": {
+          "n": 60,
+          "p50": 12,
+          "p95": 22,
+          "p99": 26.2,
+          "max": 28
+        }
+      },
+      "1024": {
+        "baseline_fifo": {
+          "n": 60,
+          "p50": 42193.5,
+          "p95": 43010.3,
+          "p99": 44067.9,
+          "max": 44390
+        },
+        "celeris_java": {
+          "n": 60,
+          "p50": 22,
+          "p95": 51.7,
+          "p99": 121.1,
+          "max": 130
+        },
+        "celeris_rust": {
+          "n": 60,
+          "p50": 16,
+          "p95": 38.4,
+          "p99": 69.9,
+          "max": 100
+        }
+      }
+    },
+    "decode_errors": 0
+  },
+  "tcp_loopback": {
+    "phases": {
+      "idle": {
+        "baseline_fifo": {
+          "n": 25,
+          "p50": 0.59,
+          "p95": 0.8,
+          "max": 0.85
+        },
+        "celeris_java": {
+          "n": 25,
+          "p50": 0.83,
+          "p95": 1.57,
+          "max": 1.73
+        },
+        "celeris_rust": {
+          "n": 25,
+          "p50": 0.72,
+          "p95": 1.07,
+          "max": 1.17
+        }
+      },
+      "burst_512kb": {
+        "baseline_fifo": {
+          "n": 30,
+          "p50": 5.52,
+          "p95": 12.22,
+          "max": 12.36
+        },
+        "celeris_java": {
+          "n": 30,
+          "p50": 0.91,
+          "p95": 6.28,
+          "max": 8.27
+        },
+        "celeris_rust": {
+          "n": 30,
+          "p50": 0.98,
+          "p95": 6.25,
+          "max": 7.65
+        }
+      },
+      "burst_1024kb": {
+        "baseline_fifo": {
+          "n": 36,
+          "p50": 13.15,
+          "p95": 15.23,
+          "max": 15.29
+        },
+        "celeris_java": {
+          "n": 36,
+          "p50": 0.83,
+          "p95": 3.1,
+          "max": 4.16
+        },
+        "celeris_rust": {
+          "n": 36,
+          "p50": 0.82,
+          "p95": 1.6,
+          "max": 3.33
+        }
+      }
+    },
+    "total_rows": 273
+  },
+  "compression_sweep": [
+    {
+      "engine": "celeris_java",
+      "threshold": -1,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 630544,
+      "saved_pct": -0.08,
+      "encode_us": 1326,
+      "throughput_mbps": 3801.19,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": -1,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 630544,
+      "saved_pct": -0.08,
+      "encode_us": 21785,
+      "throughput_mbps": 231.37,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": -1,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 630544,
+      "saved_pct": -0.08,
+      "encode_us": 818,
+      "throughput_mbps": 6161.84,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": -1,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 630544,
+      "saved_pct": -0.08,
+      "encode_us": 19184,
+      "throughput_mbps": 262.74,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": -1,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 630544,
+      "saved_pct": -0.08,
+      "encode_us": 3679,
+      "throughput_mbps": 1370.04,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": -1,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 630544,
+      "saved_pct": -0.08,
+      "encode_us": 21431,
+      "throughput_mbps": 235.19,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 64,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 168877,
+      "saved_pct": 73.2,
+      "encode_us": 6760,
+      "throughput_mbps": 745.62,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 64,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 169114,
+      "saved_pct": 73.16,
+      "encode_us": 7602,
+      "throughput_mbps": 663.03,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 64,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 163903,
+      "saved_pct": 73.99,
+      "encode_us": 9512,
+      "throughput_mbps": 529.9,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 64,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 154017,
+      "saved_pct": 75.55,
+      "encode_us": 10480,
+      "throughput_mbps": 480.95,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 64,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 158178,
+      "saved_pct": 74.89,
+      "encode_us": 22807,
+      "throughput_mbps": 221,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 64,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 154515,
+      "saved_pct": 75.48,
+      "encode_us": 20037,
+      "throughput_mbps": 251.55,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 128,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 168877,
+      "saved_pct": 73.2,
+      "encode_us": 7521,
+      "throughput_mbps": 670.17,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 128,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 169114,
+      "saved_pct": 73.16,
+      "encode_us": 11022,
+      "throughput_mbps": 457.3,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 128,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 163903,
+      "saved_pct": 73.99,
+      "encode_us": 9669,
+      "throughput_mbps": 521.29,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 128,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 154017,
+      "saved_pct": 75.55,
+      "encode_us": 12550,
+      "throughput_mbps": 401.62,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 128,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 158178,
+      "saved_pct": 74.89,
+      "encode_us": 18966,
+      "throughput_mbps": 265.76,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 128,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 154515,
+      "saved_pct": 75.48,
+      "encode_us": 21261,
+      "throughput_mbps": 237.07,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 256,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 173917,
+      "saved_pct": 72.4,
+      "encode_us": 4543,
+      "throughput_mbps": 1109.48,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 256,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 173824,
+      "saved_pct": 72.41,
+      "encode_us": 12652,
+      "throughput_mbps": 398.39,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 256,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 168943,
+      "saved_pct": 73.19,
+      "encode_us": 11188,
+      "throughput_mbps": 450.52,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 256,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 158727,
+      "saved_pct": 74.81,
+      "encode_us": 47425,
+      "throughput_mbps": 106.28,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 256,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 163218,
+      "saved_pct": 74.09,
+      "encode_us": 16392,
+      "throughput_mbps": 307.49,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 256,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 159225,
+      "saved_pct": 74.73,
+      "encode_us": 27104,
+      "throughput_mbps": 185.96,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 512,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 173917,
+      "saved_pct": 72.4,
+      "encode_us": 8763,
+      "throughput_mbps": 575.19,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 512,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 173824,
+      "saved_pct": 72.41,
+      "encode_us": 8894,
+      "throughput_mbps": 566.72,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 512,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 168943,
+      "saved_pct": 73.19,
+      "encode_us": 12444,
+      "throughput_mbps": 405.05,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 512,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 158727,
+      "saved_pct": 74.81,
+      "encode_us": 19403,
+      "throughput_mbps": 259.77,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 512,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 163218,
+      "saved_pct": 74.09,
+      "encode_us": 26002,
+      "throughput_mbps": 193.85,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 512,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 159225,
+      "saved_pct": 74.73,
+      "encode_us": 24432,
+      "throughput_mbps": 206.3,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 1024,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 173917,
+      "saved_pct": 72.4,
+      "encode_us": 6349,
+      "throughput_mbps": 793.89,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 1024,
+      "zlib_level": 1,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 173824,
+      "saved_pct": 72.41,
+      "encode_us": 10908,
+      "throughput_mbps": 462.08,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 1024,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 168943,
+      "saved_pct": 73.19,
+      "encode_us": 10034,
+      "throughput_mbps": 502.33,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 1024,
+      "zlib_level": 4,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 158727,
+      "saved_pct": 74.81,
+      "encode_us": 11957,
+      "throughput_mbps": 421.54,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_java",
+      "threshold": 1024,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 163218,
+      "saved_pct": 74.09,
+      "encode_us": 18196,
+      "throughput_mbps": 277.01,
+      "cfb8_verified": true
+    },
+    {
+      "engine": "celeris_rust",
+      "threshold": 1024,
+      "zlib_level": 6,
+      "packets": 424,
+      "raw_bytes": 630048,
+      "wire_bytes": 159225,
+      "saved_pct": 74.73,
+      "encode_us": 23317,
+      "throughput_mbps": 216.17,
+      "cfb8_verified": true
+    }
+  ],
+  "live_telemetry": {
+    "rows": 8891,
+    "duration_sec": 1349.8,
+    "saved_pct": 76.7,
+    "express_cnt": 484188,
+    "bulk_cnt": 2671,
+    "preempted_cnt": 20629,
+    "phases": {},
+    "series": [
+      {
+        "t_sec": 0,
+        "ka_ms": null,
+        "mc_ping_ms": 156,
+        "kb": 7919.2
+      },
+      {
+        "t_sec": 10,
+        "ka_ms": null,
+        "mc_ping_ms": 626,
+        "kb": 8690.3
+      },
+      {
+        "t_sec": 20,
+        "ka_ms": null,
+        "mc_ping_ms": 134,
+        "kb": 14726.1
+      },
+      {
+        "t_sec": 30,
+        "ka_ms": null,
+        "mc_ping_ms": 214,
+        "kb": 12195.4
+      },
+      {
+        "t_sec": 40,
+        "ka_ms": null,
+        "mc_ping_ms": 135,
+        "kb": 9466.7
+      },
+      {
+        "t_sec": 50,
+        "ka_ms": null,
+        "mc_ping_ms": 126,
+        "kb": 14212.8
+      },
+      {
+        "t_sec": 60,
+        "ka_ms": null,
+        "mc_ping_ms": 123,
+        "kb": 13067.7
+      },
+      {
+        "t_sec": 70,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 9578.5
+      },
+      {
+        "t_sec": 80,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 14694.8
+      },
+      {
+        "t_sec": 90,
+        "ka_ms": null,
+        "mc_ping_ms": 154,
+        "kb": 12782.2
+      },
+      {
+        "t_sec": 100,
+        "ka_ms": null,
+        "mc_ping_ms": 131,
+        "kb": 9436.8
+      },
+      {
+        "t_sec": 110,
+        "ka_ms": null,
+        "mc_ping_ms": 130,
+        "kb": 9134.2
+      },
+      {
+        "t_sec": 120,
+        "ka_ms": null,
+        "mc_ping_ms": 148,
+        "kb": 11139.1
+      },
+      {
+        "t_sec": 130,
+        "ka_ms": null,
+        "mc_ping_ms": 148,
+        "kb": 1.3
+      },
+      {
+        "t_sec": 140,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 9211.5
+      },
+      {
+        "t_sec": 150,
+        "ka_ms": null,
+        "mc_ping_ms": 148,
+        "kb": 25
+      },
+      {
+        "t_sec": 160,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 1.3
+      },
+      {
+        "t_sec": 170,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 4184.6
+      },
+      {
+        "t_sec": 180,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 7476
+      },
+      {
+        "t_sec": 190,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 2300
+      },
+      {
+        "t_sec": 200,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 41.1
+      },
+      {
+        "t_sec": 210,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 220,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 230,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 240,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 250,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 260,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 1.7
+      },
+      {
+        "t_sec": 270,
+        "ka_ms": null,
+        "mc_ping_ms": 148,
+        "kb": 1.2
+      },
+      {
+        "t_sec": 280,
+        "ka_ms": null,
+        "mc_ping_ms": 150,
+        "kb": 89.3
+      },
+      {
+        "t_sec": 290,
+        "ka_ms": null,
+        "mc_ping_ms": 150,
+        "kb": 4793.9
+      },
+      {
+        "t_sec": 300,
+        "ka_ms": null,
+        "mc_ping_ms": 146,
+        "kb": 8577.1
+      },
+      {
+        "t_sec": 310,
+        "ka_ms": null,
+        "mc_ping_ms": 153,
+        "kb": 3777.6
+      },
+      {
+        "t_sec": 320,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 213.9
+      },
+      {
+        "t_sec": 330,
+        "ka_ms": null,
+        "mc_ping_ms": 146,
+        "kb": 227.9
+      },
+      {
+        "t_sec": 340,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 203.7
+      },
+      {
+        "t_sec": 350,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 173.6
+      },
+      {
+        "t_sec": 360,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 370,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 380,
+        "ka_ms": null,
+        "mc_ping_ms": 142,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 390,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 400,
+        "ka_ms": null,
+        "mc_ping_ms": 147,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 410,
+        "ka_ms": null,
+        "mc_ping_ms": 135,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 420,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 430,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 440,
+        "ka_ms": null,
+        "mc_ping_ms": 145,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 450,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 460,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 470,
+        "ka_ms": null,
+        "mc_ping_ms": 144,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 480,
+        "ka_ms": null,
+        "mc_ping_ms": 155,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 490,
+        "ka_ms": null,
+        "mc_ping_ms": 145,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 500,
+        "ka_ms": null,
+        "mc_ping_ms": 153,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 510,
+        "ka_ms": null,
+        "mc_ping_ms": 149,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 520,
+        "ka_ms": null,
+        "mc_ping_ms": 148,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 530,
+        "ka_ms": null,
+        "mc_ping_ms": 146,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 540,
+        "ka_ms": null,
+        "mc_ping_ms": 148,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 550,
+        "ka_ms": null,
+        "mc_ping_ms": 147,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 560,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 570,
+        "ka_ms": null,
+        "mc_ping_ms": 142,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 580,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 590,
+        "ka_ms": null,
+        "mc_ping_ms": 144,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 600,
+        "ka_ms": null,
+        "mc_ping_ms": 144,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 610,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 620,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 630,
+        "ka_ms": null,
+        "mc_ping_ms": 144,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 640,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 650,
+        "ka_ms": null,
+        "mc_ping_ms": 144,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 660,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 670,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 680,
+        "ka_ms": null,
+        "mc_ping_ms": 145,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 690,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 700,
+        "ka_ms": null,
+        "mc_ping_ms": 145,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 710,
+        "ka_ms": null,
+        "mc_ping_ms": 146,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 720,
+        "ka_ms": null,
+        "mc_ping_ms": 142,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 730,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 740,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 750,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 760,
+        "ka_ms": null,
+        "mc_ping_ms": 154,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 770,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 780,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 790,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 800,
+        "ka_ms": null,
+        "mc_ping_ms": 155,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 810,
+        "ka_ms": null,
+        "mc_ping_ms": 141,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 820,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 830,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 840,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 850,
+        "ka_ms": null,
+        "mc_ping_ms": 135,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 860,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 870,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 880,
+        "ka_ms": null,
+        "mc_ping_ms": 135,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 890,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 900,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 910,
+        "ka_ms": null,
+        "mc_ping_ms": 143,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 920,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 930,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 940,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 950,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 960,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 1.1
+      },
+      {
+        "t_sec": 970,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 980,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 990,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1000,
+        "ka_ms": null,
+        "mc_ping_ms": 135,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1010,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1020,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1030,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1040,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1050,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1060,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1070,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1080,
+        "ka_ms": null,
+        "mc_ping_ms": 147,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1090,
+        "ka_ms": null,
+        "mc_ping_ms": 149,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1100,
+        "ka_ms": null,
+        "mc_ping_ms": 135,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1110,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1120,
+        "ka_ms": null,
+        "mc_ping_ms": 140,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1130,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1140,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1150,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1160,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1170,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1180,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1190,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1200,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1210,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1220,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1230,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1240,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1250,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1260,
+        "ka_ms": null,
+        "mc_ping_ms": 137,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1270,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1280,
+        "ka_ms": null,
+        "mc_ping_ms": 135,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1290,
+        "ka_ms": null,
+        "mc_ping_ms": 138,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1300,
+        "ka_ms": null,
+        "mc_ping_ms": 139,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1310,
+        "ka_ms": null,
+        "mc_ping_ms": 142,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1320,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1330,
+        "ka_ms": null,
+        "mc_ping_ms": 160,
+        "kb": 0.9
+      },
+      {
+        "t_sec": 1340,
+        "ka_ms": null,
+        "mc_ping_ms": 136,
+        "kb": 0.1
+      }
+    ]
+  }
+}
