@@ -1,6 +1,6 @@
 # Celeris (0.1.0-beta) — Full Technical Specification for LLMs
 
-> Celeris is a single-jar, server-side Netty transport & Rust JNI acceleration engine for Minecraft (`1.20.5`–`1.21.x` and `26.1`–`26.x`). Zero client mods required. License: `AGPL-3.0-or-later`.
+> Celeris is a single-jar, server-side Netty transport & Rust JNI acceleration engine for Minecraft (`1.20.5`–`1.21.x` and `26.1`–`26.x`). Zero client mods required. License: `Apache-2.0`.
 
 ---
 

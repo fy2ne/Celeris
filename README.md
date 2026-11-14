@@ -78,4 +78,4 @@ The universal jar is written to `universal-jar/build/libs/Celeris-0.1.0-beta.jar
 
 ## License
 
-Licensed under **AGPL-3.0-or-later**. See [LICENSE](LICENSE).
+Licensed under **Apache-2.0**. See [LICENSE](LICENSE).

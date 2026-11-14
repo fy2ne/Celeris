@@ -12,7 +12,7 @@ All specifications below are verified directly against the repository (`universa
 |---|---|
 | **Plugin Name** | `Celeris` |
 | **Repo Version / Live Test Build** | `0.2.0` (`build.gradle.kts`, `plugin.yml`, `fabric.mod.json`, `neoforge.mods.toml`) / `v0.1.0` observed live on `roxaura.mcsh.gg` |
-| **Author & License** | `fy2ne` — `AGPL-3.0-or-later` |
+| **Author & License** | `fy2ne` — `Apache-2.0` |
 | **Supported Platforms** | Paper, Spigot, Purpur, Folia (`folia-supported: true`), Velocity, Fabric, NeoForge |
 | **Minecraft Range** | `1.20.5`–`1.21.x` and `26.1`–`26.x` (live tested on Paper `26.3`, protocol `777`) |
 | **Client Requirement** | Zero client mods required (`via=safe(wire<via)` ViaVersion compatibility verified live) |

@@ -74,8 +74,8 @@ publishing {
                 url.set("https://github.com/fy2ne/Celeris")
                 licenses {
                     license {
-                        name.set("AGPL-3.0-or-later")
-                        url.set("https://www.gnu.org/licenses/agpl-3.0.txt")
+                        name.set("Apache-2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
             }

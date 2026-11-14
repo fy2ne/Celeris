@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[1,)"
-license="AGPL-3.0-or-later"
+license="Apache-2.0"
 issueTrackerURL="https://github.com/fy2ne/Celeris/issues"
 
 [[mods]]
