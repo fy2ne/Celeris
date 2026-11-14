@@ -6,7 +6,7 @@
 
 ## 1. Platform Support & Installation
 A single universal `.jar` (`Celeris-0.1.0-beta.jar`) contains bootstraps for:
-- **Paper / Spigot / Purpur / Folia** (`plugin.yml` -> `PaperBootstrap`) — drop into `plugins/`
+- **Paper / Spigot / Purpur / Folia** (`plugin.yml` -> `PaperBootstrap`) — drop into `plugins/` (Modrinth: https://modrinth.com/project/celeris_mc)
 - **Velocity** (`VelocityBootstrap`) — drop into `plugins/`
 - **Fabric** (`fabric.mod.json` -> `FabricBootstrap`) — drop into `mods/`
 - **NeoForge** (`META-INF/neoforge.mods.toml` -> `NeoForgeBootstrap`) — drop into `mods/`

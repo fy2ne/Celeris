@@ -1,10 +1,12 @@
 modLoader="javafml"
 loaderVersion="[1,)"
 license="AGPL-3.0-or-later"
+issueTrackerURL="https://github.com/fy2ne/Celeris/issues"
 
 [[mods]]
 modId="celeris"
 version="0.1.0-beta"
 displayName="Celeris"
+displayURL="https://modrinth.com/project/celeris_mc"
 description="Rust native TCP pacer and priority packet engine"
 authors="fy2ne"

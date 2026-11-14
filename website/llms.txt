@@ -19,7 +19,7 @@ Vanilla Minecraft servers send chunks, light updates, combat hits, and KeepAlive
 ## Links & Coordinates
 - Website: https://celeris.fy2ne.me
 - GitHub: https://github.com/fy2ne/Celeris
-- Modrinth: https://modrinth.com/project/celeris *(upcoming)*
+- Modrinth: https://modrinth.com/project/celeris_mc
 - Maven (GitHub Packages): `dev.fy2ne:celeris:0.1.0-beta` at `https://maven.pkg.github.com/fy2ne/Celeris`
 
 ## Full LLM Documentation

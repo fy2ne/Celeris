@@ -5,6 +5,18 @@
   "name": "Celeris",
   "description": "Rust native TCP pacer and priority packet engine",
   "authors": ["fy2ne"],
+  "contact": {
+    "homepage": "https://celeris.fy2ne.me",
+    "sources": "https://github.com/fy2ne/Celeris",
+    "issues": "https://github.com/fy2ne/Celeris/issues"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.modrinth": "https://modrinth.com/project/celeris_mc"
+      }
+    }
+  },
   "license": "AGPL-3.0-or-later",
   "environment": "server",
   "entrypoints": {

@@ -5,7 +5,7 @@ Single-jar, server-side Netty transport and Rust JNI engine for Minecraft (`1.20
 Supports **Paper, Spigot, Purpur, Folia, Velocity, Fabric, and NeoForge**. Vanilla clients connect on `25565` with zero client mods.
 
 - **Website & Live Benchmarks:** https://celeris.fy2ne.me
-- **Modrinth:** https://modrinth.com/project/celeris *(upcoming)*
+- **Modrinth:** https://modrinth.com/project/celeris_mc
 - **Current Release:** `0.1.0-beta`
 
 ## What Celeris Fixes
