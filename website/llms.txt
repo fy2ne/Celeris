@@ -1,0 +1,26 @@
+# Celeris (0.1.0-beta)
+
+> Celeris is a single-jar, server-side Netty transport and Rust JNI acceleration engine for Minecraft (`1.20.5`–`1.21.x` & `26.1`–`26.x`). It runs on Paper, Spigot, Purpur, Folia, Velocity, Fabric, and NeoForge with zero client mods required.
+
+## Core Problem Solved
+Vanilla Minecraft servers send chunks, light updates, combat hits, and KeepAlive pings through one FIFO Netty queue and an uncapped OS TCP send buffer. During chunk bursts (256–1,024 KB), small latency-sensitive packets get trapped behind bulk traffic in user space and the kernel send queue.
+
+## Architecture Summary
+1. **Bundle-Safe 3-Tier Preemption:** Classifies outbound packets into **Express** (`KeepAlive`, `Ping`/`Pong`, combat/damage, entity motion, blocks), **Ordering Barriers** (`ChunkBatchStart`/`Finished`, `FinishConfiguration`, `ForgetLevelChunk`), and **Bulk** (chunks, light updates, recipes). Express cuts ahead between `32 KB` bulk wire slices without splitting atomic `BundleDelimiter` trains or bypassing ViaVersion.
+2. **Linux Kernel Socket Tuning:** Sets `TCP_NOTSENT_LOWAT` (default `16384` bytes), `TCP_NODELAY`, and `TCP_QUICKACK`, and reads `TCP_INFO` (`tcpi_rtt`, `tcpi_rttvar`, retransmissions) to dynamically throttle bulk flush budgets.
+3. **Fused Single-Pass Rust JNI Codec:** Combines VarInt framing and zlib compression in one off-heap Rust pass, reducing Netty `ByteBuf` churn while keeping pure-Java `java-engine` parity fallback for unsupported platforms.
+4. **Security & Isolation:** Handshake/unauthenticated channels bypass priority queuing until play/configuration; Express queues enforce bounded packet and byte caps with automatic fallback to FIFO under saturation.
+
+## Verified Benchmarks (`0.1.0-beta` / `0.2.0` vs Vanilla FIFO)
+- **1 MB Burst Express P99 (32 KB paced slices, n=60):** `100 us` (`rust-native`), `130 us` (`java-engine`) vs `44,390 us` (Vanilla FIFO). `0` decode errors.
+- **TCP Loopback 1 MB Burst KeepAlive (`SO_RCVBUF=8 KB`):** `0.82 ms` P50 / `2.70 ms` P95 (`rust-native`) vs `13.07 ms` P50 / `15.25 ms` P95 (Vanilla FIFO).
+- **Live Paper `26.3` (`roxaura.mcsh.gg`, `v0.1.0` `java-engine`, `8,447` rows):** `78.7%` wire savings, `20,629` preemptions, `0` disconnects.
+
+## Links & Coordinates
+- Website: https://celeris.fy2ne.me
+- GitHub: https://github.com/fy2ne/Celeris
+- Modrinth: https://modrinth.com/project/celeris *(upcoming)*
+- Maven (GitHub Packages): `dev.fy2ne:celeris:0.1.0-beta` at `https://maven.pkg.github.com/fy2ne/Celeris`
+
+## Full LLM Documentation
+- Complete technical specification & raw benchmark reference: https://celeris.fy2ne.me/llms-full.txt

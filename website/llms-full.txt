@@ -1,0 +1,110 @@
+# Celeris (0.1.0-beta) — Full Technical Specification for LLMs
+
+> Celeris is a single-jar, server-side Netty transport & Rust JNI acceleration engine for Minecraft (`1.20.5`–`1.21.x` and `26.1`–`26.x`). Zero client mods required. License: `AGPL-3.0-or-later`.
+
+---
+
+## 1. Platform Support & Installation
+A single universal `.jar` (`Celeris-0.1.0-beta.jar`) contains bootstraps for:
+- **Paper / Spigot / Purpur / Folia** (`plugin.yml` -> `PaperBootstrap`) — drop into `plugins/`
+- **Velocity** (`VelocityBootstrap`) — drop into `plugins/`
+- **Fabric** (`fabric.mod.json` -> `FabricBootstrap`) — drop into `mods/`
+- **NeoForge** (`META-INF/neoforge.mods.toml` -> `NeoForgeBootstrap`) — drop into `mods/`
+
+### Native Binaries Bundled / Built
+- `linux-x86_64` (`libceleris_core.so`)
+- `linux-aarch64` (`libceleris_core.so`)
+- `windows-x86_64` (`celeris_core.dll`)
+- `macos-aarch64` (`libceleris_core.dylib`)
+- Automatic runtime fallback to `java-engine` (`JavaScheduler`) if a native library is unavailable on the host OS/arch.
+
+### Maven / Gradle (GitHub Packages)
+```kotlin
+repositories {
+    maven("https://maven.pkg.github.com/fy2ne/Celeris")
+}
+
+dependencies {
+    compileOnly("dev.fy2ne:celeris:0.1.0-beta")
+}
+```
+
+---
+
+## 2. How Celeris Works Under the Hood
+
+### A. Netty Pipeline Injection (`PipelineInjector`, `CelerisChannelHandler`)
+- Injects per-channel into Netty's `ChannelPipeline` in play/configuration states, preserving exact handler ordering with `ViaVersion`, `ViaBackwards`, vanilla `compress` (`CompressionEncoder`), and `encrypt` (`AES-128-CFB8`).
+- Encryption (`AES-128-CFB8`) always runs **after** Celeris drains and frames outbound packets (`cfb8_reorder_safe_when_encrypted_at_drain`), so stream cipher state never desynchronizes even when Express packets preempt queued Bulk packets.
+
+### B. Bundle-Safe 3-Tier Packet Classifier (`PacketClassifier`, `rust-core/src/scheduler.rs`)
+Outbound packets are classified into three lanes:
+1. **Express Lane:** `KeepAlive`, `Ping`/`Pong`, combat/damage events, player/entity position & velocity, block updates, sound/particle cues, and atomic `BundleDelimiter` trains.
+   - Express traffic preempts queued Bulk slices between `32 KB` wire boundaries.
+   - `BundleDelimiter` boundaries are tracked so an active bundle is never split mid-train.
+2. **Ordering Barriers:** `ChunkBatchStart`, `ChunkBatchFinished`, `FinishConfiguration`, `ForgetLevelChunk`.
+   - Enforces strict causal ordering around chunk batch windows and state transitions.
+3. **Bulk Lane:** `LevelChunkWithLight`, `LightUpdate`, recipe/advancement syncs, large initial state payloads.
+   - Sliced into `32 KB` wire chunks and paced dynamically against `TCP_INFO` RTT/jitter.
+
+### C. Fused Single-Pass Rust Codec (`rust-core/src/codec.rs`)
+- Combines Minecraft VarInt length framing + zlib compression (`flate2` / reusable compressor) in a single off-heap Rust pass.
+- Below-threshold payloads write `data_length = 0` with zero compression overhead.
+- Eliminates intermediate Netty `ByteBuf` allocations and reduces JVM GC pressure during heavy chunk bursts.
+
+### D. Kernel Socket Tuning (`rust-core/src/socket.rs`, `SocketFdExtractor`)
+- Extracts the underlying native socket FD from Netty's Epoll/KQueue/NIO channel.
+- Applies `TCP_NOTSENT_LOWAT` (default `16384` bytes), `TCP_NODELAY=1`, and `TCP_QUICKACK=1` (Linux).
+- Polls Linux `TCP_INFO` (`tcpi_rtt`, `tcpi_rttvar`, retransmissions) to shrink bulk flush budgets and widen pacing when retransmissions or RTT jitter spike.
+
+### E. Security & DoS Hardening
+- Unauthenticated/handshake channels bypass Celeris queuing completely until login succeeds.
+- Express queues enforce bounded packet and byte capacities; if saturated by malicious or abnormal traffic, channels automatically fall back to FIFO without dropping legitimate connections or leaking native buffers.
+- All JNI slice bounds are validated before crossing FFI.
+
+---
+
+## 3. Runtime Commands
+- `/celeris stats` — active channels, Express/Bulk/preempted/backpressure/bypassed counts, Express delay percentiles (`P50`/`P95`/`P99`/`Max` in `us`), bulk hold time, compression savings `%`, kernel RTT, and socket flags.
+- `/celeris bench [kb] [iters]` — in-JVM A/B benchmark (Baseline FIFO vs active Celeris engine).
+- `/celeris debug` — prints Netty pipeline handler order, compression threshold sync, and ViaVersion placement.
+- `/celeris test` — synthetic 64 KB burst preemption self-test.
+- `/celeris ping [player]` — compares `mcPing`, `kernelRtt`, and Express `P99`.
+- `/celeris toggle` — runtime toggle between active Celeris and zero-overhead bypass.
+- `/celeris lowat <bytes>` — live `TCP_NOTSENT_LOWAT` update (default `16384`).
+- `/celeris level <0-9>` — live zlib compression level update (default `6`).
+- `/celeris bulk <bytes|0>` — cap per-flush bulk burst bytes (`0` = automatic `TCP_INFO` pacing).
+
+---
+
+## 4. Verified Benchmark Data (`docs/benchmarks/data/*.csv`)
+
+### Express Burst Scheduler (32 KB wire slices, 6 ms pacing, n=60, 0 decode errors)
+- **256 KB Burst:**
+  - Vanilla FIFO: `P50 = 6,188 us`, `P95 = 7,763 us`, `P99 = 12,807 us`
+  - Celeris `java-engine`: `P50 = 38 us`, `P95 = 88 us`, `P99 = 233 us`
+  - Celeris `rust-native`: `P50 = 19 us`, `P95 = 26 us`, `P99 = 30 us`
+- **512 KB Burst:**
+  - Vanilla FIFO: `P50 = 18,141 us`, `P95 = 18,388 us`, `P99 = 19,816 us`
+  - Celeris `java-engine`: `P50 = 38 us`, `P95 = 89 us`, `P99 = 690 us`
+  - Celeris `rust-native`: `P50 = 12 us`, `P95 = 22 us`, `P99 = 28 us`
+- **1,024 KB Burst:**
+  - Vanilla FIFO: `P50 = 42,191 us`, `P95 = 42,977 us`, `P99 = 44,390 us`
+  - Celeris `java-engine`: `P50 = 21 us`, `P95 = 51 us`, `P99 = 130 us`
+  - Celeris `rust-native`: `P50 = 15 us`, `P95 = 38 us`, `P99 = 100 us`
+
+### Real TCP Loopback KeepAlive RTT (`SO_RCVBUF=8 KB`)
+- **Idle (n=25):** FIFO `P50=0.59ms P95=0.81ms` | `java-engine` `P50=0.83ms P95=1.66ms` | `rust-native` `P50=0.72ms P95=1.10ms`
+- **512 KB Burst (n=30):** FIFO `P50=5.47ms P95=12.25ms` | `java-engine` `P50=0.91ms P95=6.86ms` | `rust-native` `P50=0.97ms P95=7.56ms`
+- **1,024 KB Burst (n=36):** FIFO `P50=13.07ms P95=15.25ms` | `java-engine` `P50=0.81ms P95=3.17ms` | `rust-native` `P50=0.82ms P95=2.70ms`
+
+### Live Paper `26.3` Field Telemetry (`roxaura.mcsh.gg`, `v0.1.0` `java-engine`, `8,447` rows)
+- Wire savings: `78.7%` aggregate (peak windows `83.0%–85.5%`), `20,629` preemptions, `0` disconnects.
+- Idle `mcPing P50 = 136 ms` vs `/tp` chunk-burst `mcPing P50 = 142 ms`.
+
+---
+
+## 5. Honest Limitations
+- **Idle connections:** When no bulk burst is queued, Vanilla FIFO and Celeris have equivalent RTT (`~0.6–0.8 ms` on loopback).
+- **Speed-of-light / fiber distance:** Celeris eliminates burst-induced queuing spikes on top of base RTT; it cannot reduce geographic propagation delay (e.g. Morocco to EU remains `~136 ms`).
+- **Main-thread TPS lag:** Packet transport tuning does not accelerate overloaded server tick loops (<20 TPS).
