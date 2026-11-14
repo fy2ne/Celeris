@@ -7,10 +7,10 @@
   const tableEl = document.getElementById("bench-table");
 
   const COLORS = {
-    fifo: "#f07a6a",
+    fifo: "#f87171",
     java: "#38bdf8",
-    rust: "#a98fff",
-    amber: "#f2c46b",
+    rust: "#a78bfa",
+    amber: "#fbbf24",
   };
 
   let activeTab = "burst";
@@ -267,12 +267,12 @@
   function renderLive() {
     const live = data.live_telemetry;
     const mount = cardShell({
-      title: "Live Paper 26.3 (roxaura.mcsh.gg) — KeepAlive Interval vs. MC Ping",
-      subtitle: `v0.1.0 java-engine · ${live.rows.toLocaleString("en-US")} telemetry rows · ${live.saved_pct.toFixed(1)}% wire saved · ${live.preempted_cnt.toLocaleString("en-US")} preemptions · 0 disconnects`,
+      title: "Live Paper 26.3 (roxaura.mcsh.gg): KeepAlive Interval vs. MC Ping",
+      subtitle: `v0.1.0 java-engine, ${live.rows.toLocaleString("en-US")} telemetry rows, ${live.saved_pct.toFixed(1)}% wire saved, ${live.preempted_cnt.toLocaleString("en-US")} preemptions, 0 disconnects`,
       direction: "↓ lower is better",
       source: "Source: docs/benchmarks/data/telemetry_live.csv",
       legend: [
-        ["KeepAlive Interval (ms)", COLORS.rust],
+        ["KeepAlive Interval (ms)", COLORS.fifo],
         ["MC Ping (ms)", COLORS.amber],
       ],
     });
@@ -287,7 +287,7 @@
       ticks: [0, 300, 600, 900, 1200],
       unit: " ms",
       series: [
-        { name: "KeepAlive", color: COLORS.rust, points: kaPts },
+        { name: "KeepAlive", color: COLORS.fifo, points: kaPts },
         { name: "MC Ping", color: COLORS.amber, points: pingPts },
       ],
     });
@@ -310,7 +310,7 @@
               <td class="num">${s.ka_n}</td>
               <td class="num">${s.ka_p50_ms.toFixed(1)} ms</td>
               <td class="num">${s.ka_p95_ms.toFixed(1)} ms</td>
-              <td class="num">${s.mc_ping_p50_ms !== null ? s.mc_ping_p50_ms.toFixed(1) + " ms" : "—"}</td>
+              <td class="num">${s.mc_ping_p50_ms !== null ? s.mc_ping_p50_ms.toFixed(1) + " ms" : "-"}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -334,7 +334,6 @@
     });
   });
 
-  // CodeBlock copy buttons
   document.querySelectorAll("[data-copy]").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const target = document.getElementById(btn.dataset.copy);

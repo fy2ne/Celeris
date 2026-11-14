@@ -1,8 +1,8 @@
-// Ported from Weavetab BenchmarkChart.tsx engine (purple/horizon palette, CSS var tokens, hover tooltips)
 window.CelerisCharts = (function () {
   const NS = "http://www.w3.org/2000/svg";
   const FG = "var(--color-fg-default)";
   const MUTED = "var(--color-fg-muted)";
+  const SUBTLE = "var(--color-fg-subtle)";
   const GRID = "var(--color-border-default)";
   const AXIS = "var(--color-border-strong)";
 
@@ -45,7 +45,7 @@ window.CelerisCharts = (function () {
 
     return {
       show(x, y, valText, label, color) {
-        const boxW = Math.max(132, valText.length * 7.2 + label.length * 6.2 + 34);
+        const boxW = Math.max(146, valText.length * 7.2 + label.length * 6.0 + 36);
         const cx = Math.max(boxW / 2 + 8, Math.min(width - boxW / 2 - 8, x));
         const cy = Math.max(36, y - 8);
         g.setAttribute("transform", `translate(${cx.toFixed(1)},${cy.toFixed(1)})`);
@@ -67,7 +67,7 @@ window.CelerisCharts = (function () {
   }
 
   function renderGroupedBar(container, cfg) {
-    const w = 840, h = 320, padL = 72, padR = 24, padT = 26, padB = 42;
+    const w = 860, h = 330, padL = 78, padR = 24, padT = 26, padB = 46;
     const pw = w - padL - padR, ph = h - padT - padB;
     const svg = el("svg", { viewBox: `0 0 ${w} ${h}`, class: "benchmark-svg" });
 
@@ -81,30 +81,33 @@ window.CelerisCharts = (function () {
         const t = (lv - minLog) / (Math.max(maxVal, 4.8) - minLog);
         return padT + ph * (1 - t);
       }
-      return padT + ph * (1 - v / (maxVal * 1.12));
+      return padT + ph * (1 - v / (maxVal * 1.14));
     };
 
     const ticks = cfg.logScale ? [10, 100, 1000, 10000, 50000] : cfg.ticks;
     ticks.forEach((t) => {
       const yp = yPos(t);
-      svg.appendChild(el("line", { x1: padL, y1: yp, x2: w - padR, y2: yp, stroke: GRID, "stroke-width": 1 }));
+      svg.appendChild(el("line", {
+        x1: padL, y1: yp, x2: w - padR, y2: yp,
+        stroke: GRID, "stroke-width": 1, "stroke-dasharray": "3 3",
+      }));
       const txt = cfg.logScale ? (t < 1000 ? `${t}` : `${t / 1000}k`) : `${t}${cfg.unit || ""}`;
       svg.appendChild(el("text", {
-        x: padL - 10, y: yp + 4, "text-anchor": "end", fill: MUTED,
+        x: padL - 10, y: yp + 4, "text-anchor": "end", fill: SUBTLE,
         "font-size": 11, "font-family": "var(--font-mono)",
       }, txt));
     });
     svg.appendChild(el("line", { x1: padL, y1: padT + ph, x2: w - padR, y2: padT + ph, stroke: AXIS, "stroke-width": 1 }));
 
     const gw = pw / cfg.x.length;
-    const bw = Math.min(40, (gw * 0.68) / cfg.series.length);
+    const bw = Math.min(42, (gw * 0.66) / cfg.series.length);
     const gap = 8;
 
     const bars = [];
     cfg.x.forEach((xLbl, gi) => {
       const cx = padL + gw * (gi + 0.5);
       svg.appendChild(el("text", {
-        x: cx, y: h - 14, "text-anchor": "middle", fill: FG,
+        x: cx, y: h - 14, "text-anchor": "middle", fill: MUTED,
         "font-size": 12, "font-weight": 500, "font-family": "var(--font-sans)",
       }, xLbl));
 
@@ -117,11 +120,11 @@ window.CelerisCharts = (function () {
         const by = yPos(val);
         const bh = Math.max(padT + ph - by, 2);
         const rect = el("rect", {
-          x: bx, y: by, width: bw, height: bh, rx: 4,
-          fill: s.color, opacity: 0.88, class: "chart-bar",
+          x: bx, y: by, width: bw, height: bh, rx: 3,
+          fill: s.color, opacity: 0.9, class: "chart-bar",
         });
         const lbl = el("text", {
-          x: bx + bw / 2, y: by - 6, "text-anchor": "middle", fill: FG,
+          x: bx + bw / 2, y: by - 7, "text-anchor": "middle", fill: FG,
           "font-size": 10.5, "font-family": "var(--font-mono)",
         }, cfg.formatVal(val));
         bars.push({ rect, bx, by, val, s, xLbl });
@@ -133,10 +136,10 @@ window.CelerisCharts = (function () {
     bars.forEach(({ rect, bx, by, val, s, xLbl }) => {
       rect.addEventListener("mouseenter", () => {
         rect.setAttribute("opacity", "1");
-        tip.show(bx + bw / 2, by, cfg.formatVal(val) + (cfg.unit || ""), `${s.name} · ${xLbl}`, s.color);
+        tip.show(bx + bw / 2, by, cfg.formatVal(val) + (cfg.unit || ""), `${s.name} / ${xLbl}`, s.color);
       });
       rect.addEventListener("mouseleave", () => {
-        rect.setAttribute("opacity", "0.88");
+        rect.setAttribute("opacity", "0.9");
         tip.hide();
       });
     });
@@ -146,7 +149,7 @@ window.CelerisCharts = (function () {
   }
 
   function renderLollipopOrDumbbell(container, cfg) {
-    const w = 840, h = 260, padL = 138, padR = 40, padT = 20, padB = 38;
+    const w = 860, h = 250, padL = 142, padR = 40, padT = 20, padB = 38;
     const pw = w - padL - padR, ph = h - padT - padB;
     const svg = el("svg", { viewBox: `0 0 ${w} ${h}`, class: "benchmark-svg" });
 
@@ -154,13 +157,15 @@ window.CelerisCharts = (function () {
     const maxVal = Math.max(...allVals, 1) * 1.1;
     const xPos = (v) => padL + (v / maxVal) * pw;
 
-    const steps = 4;
-    for (let i = 0; i <= steps; i++) {
-      const val = (maxVal / steps) * i;
+    for (let i = 0; i <= 4; i++) {
+      const val = (maxVal / 4) * i;
       const xp = xPos(val);
-      svg.appendChild(el("line", { x1: xp, y1: padT, x2: xp, y2: padT + ph, stroke: GRID, "stroke-width": 1 }));
+      svg.appendChild(el("line", {
+        x1: xp, y1: padT, x2: xp, y2: padT + ph,
+        stroke: GRID, "stroke-width": 1, "stroke-dasharray": "3 3",
+      }));
       svg.appendChild(el("text", {
-        x: xp, y: h - 12, "text-anchor": "middle", fill: MUTED,
+        x: xp, y: h - 12, "text-anchor": "middle", fill: SUBTLE,
         "font-size": 11, "font-family": "var(--font-mono)",
       }, `${cfg.formatVal(val)}${cfg.unit || ""}`));
     }
@@ -170,7 +175,7 @@ window.CelerisCharts = (function () {
     cfg.x.forEach((lbl, idx) => {
       const cy = padT + rowH * (idx + 0.5);
       svg.appendChild(el("text", {
-        x: padL - 12, y: cy + 4, "text-anchor": "end", fill: FG,
+        x: padL - 14, y: cy + 4, "text-anchor": "end", fill: MUTED,
         "font-size": 12, "font-weight": 500, "font-family": "var(--font-sans)",
       }, lbl));
 
@@ -179,14 +184,14 @@ window.CelerisCharts = (function () {
       svg.appendChild(el("line", {
         x1: cfg.series.length > 1 ? minX : padL,
         y1: cy, x2: maxX, y2: cy,
-        stroke: AXIS, "stroke-width": 2.5, "stroke-linecap": "round",
+        stroke: AXIS, "stroke-width": 2, "stroke-linecap": "round",
       }));
 
       cfg.series.forEach((s) => {
         const val = s.data[idx];
         const cx = xPos(val);
         const c = el("circle", {
-          cx, cy, r: 6.5, fill: s.color, stroke: "var(--color-canvas-default)", "stroke-width": 2, class: "chart-dot",
+          cx, cy, r: 6, fill: s.color, stroke: "var(--color-surface-default)", "stroke-width": 2, class: "chart-dot",
         });
         dots.push({ c, cx, cy, val, s, lbl });
         svg.appendChild(c);
@@ -196,11 +201,11 @@ window.CelerisCharts = (function () {
     const tip = makeTooltip(svg, w);
     dots.forEach(({ c, cx, cy, val, s, lbl }) => {
       c.addEventListener("mouseenter", () => {
-        c.setAttribute("r", "8.5");
-        tip.show(cx, cy, cfg.formatVal(val) + (cfg.unit || ""), `${s.name} · ${lbl}`, s.color);
+        c.setAttribute("r", "8");
+        tip.show(cx, cy, cfg.formatVal(val) + (cfg.unit || ""), `${s.name} / ${lbl}`, s.color);
       });
       c.addEventListener("mouseleave", () => {
-        c.setAttribute("r", "6.5");
+        c.setAttribute("r", "6");
         tip.hide();
       });
     });
@@ -210,7 +215,7 @@ window.CelerisCharts = (function () {
   }
 
   function renderLineChart(container, cfg) {
-    const w = 840, h = 320, padL = 62, padR = 24, padT = 24, padB = 40;
+    const w = 860, h = 320, padL = 66, padR = 24, padT = 24, padB = 42;
     const pw = w - padL - padR, ph = h - padT - padB;
     const svg = el("svg", { viewBox: `0 0 ${w} ${h}`, class: "benchmark-svg" });
 
@@ -219,11 +224,23 @@ window.CelerisCharts = (function () {
     const xPos = (x) => padL + (x / maxX) * pw;
     const yPos = (y) => padT + ph * (1 - Math.min(y, maxY) / maxY);
 
+    const defs = el("defs");
+    cfg.series.forEach((s, idx) => {
+      const grad = el("linearGradient", { id: `cg-${idx}`, x1: "0", y1: "0", x2: "0", y2: "1" });
+      grad.appendChild(el("stop", { offset: "0%", "stop-color": s.color, "stop-opacity": "0.18" }));
+      grad.appendChild(el("stop", { offset: "100%", "stop-color": s.color, "stop-opacity": "0" }));
+      defs.appendChild(grad);
+    });
+    svg.appendChild(defs);
+
     cfg.ticks.forEach((t) => {
       const yp = yPos(t);
-      svg.appendChild(el("line", { x1: padL, y1: yp, x2: w - padR, y2: yp, stroke: GRID, "stroke-width": 1 }));
+      svg.appendChild(el("line", {
+        x1: padL, y1: yp, x2: w - padR, y2: yp,
+        stroke: GRID, "stroke-width": 1, "stroke-dasharray": "3 3",
+      }));
       svg.appendChild(el("text", {
-        x: padL - 10, y: yp + 4, "text-anchor": "end", fill: MUTED,
+        x: padL - 10, y: yp + 4, "text-anchor": "end", fill: SUBTLE,
         "font-size": 11, "font-family": "var(--font-mono)",
       }, `${t}${cfg.unit || ""}`));
     });
@@ -232,20 +249,29 @@ window.CelerisCharts = (function () {
     [0, 0.25, 0.5, 0.75, 1].forEach((f) => {
       const xv = Math.round(maxX * f);
       svg.appendChild(el("text", {
-        x: xPos(xv), y: h - 12, "text-anchor": "middle", fill: MUTED,
+        x: xPos(xv), y: h - 12, "text-anchor": "middle", fill: SUBTLE,
         "font-size": 11, "font-family": "var(--font-mono)",
       }, `${xv}${cfg.xUnit || ""}`));
     });
 
+    const crosshair = el("line", {
+      x1: padL, y1: padT, x2: padL, y2: padT + ph,
+      stroke: AXIS, "stroke-width": 1, "stroke-dasharray": "2 2", style: "display:none;pointer-events:none;",
+    });
+    svg.appendChild(crosshair);
+
     const dots = [];
-    cfg.series.forEach((s) => {
+    cfg.series.forEach((s, idx) => {
       const pts = s.points.filter((p) => p.y !== null);
-      const d = pts.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(p.x).toFixed(1)},${yPos(p.y).toFixed(1)}`).join(" ");
-      svg.appendChild(el("path", { d, fill: "none", stroke: s.color, "stroke-width": 2.2, "stroke-linejoin": "round" }));
+      if (!pts.length) return;
+      const lineD = pts.map((p, i) => `${i === 0 ? "M" : "L"}${xPos(p.x).toFixed(1)},${yPos(p.y).toFixed(1)}`).join(" ");
+      const areaD = `${lineD} L${xPos(pts[pts.length - 1].x).toFixed(1)},${(padT + ph).toFixed(1)} L${xPos(pts[0].x).toFixed(1)},${(padT + ph).toFixed(1)} Z`;
+      svg.appendChild(el("path", { d: areaD, fill: `url(#cg-${idx})` }));
+      svg.appendChild(el("path", { d: lineD, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round" }));
 
       pts.forEach((p) => {
         const cx = xPos(p.x), cy = yPos(p.y);
-        const hit = el("circle", { cx, cy, r: 4, fill: s.color, opacity: 0.01, class: "chart-dot" });
+        const hit = el("circle", { cx, cy, r: 4.5, fill: s.color, opacity: 0.01, class: "chart-dot" });
         dots.push({ hit, cx, cy, p, s });
         svg.appendChild(hit);
       });
@@ -255,10 +281,14 @@ window.CelerisCharts = (function () {
     dots.forEach(({ hit, cx, cy, p, s }) => {
       hit.addEventListener("mouseenter", () => {
         hit.setAttribute("opacity", "1");
+        crosshair.setAttribute("x1", cx);
+        crosshair.setAttribute("x2", cx);
+        crosshair.style.display = "block";
         tip.show(cx, cy, `${p.y}${cfg.unit || ""}`, `${s.name} @ ${p.x}${cfg.xUnit || ""}`, s.color);
       });
       hit.addEventListener("mouseleave", () => {
         hit.setAttribute("opacity", "0.01");
+        crosshair.style.display = "none";
         tip.hide();
       });
     });
